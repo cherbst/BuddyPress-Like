@@ -7,17 +7,18 @@ if ( ! defined( 'BP_LIKE_VERSION' ) ) {
 }
 
 if ( ! defined( 'BP_LIKE_DB_VERSION' ) ) {
-    define( 'BP_LIKE_DB_VERSION', '44' );
+    define( 'BP_LIKE_DB_VERSION', '51' );
 }
 
 if ( ! defined( 'BPLIKE_PATH' ) ) {
     define( 'BPLIKE_PATH', plugin_dir_path( dirname( __FILE__ ) ) );
 }
 
-add_action('plugins_loaded', 'bp_like_load_textdomain');
 function bp_like_load_textdomain() {
 	load_plugin_textdomain( 'buddypress-like', false, BPLIKE_PATH . '/languages/' );
 }
+add_action('plugins_loaded', 'bp_like_load_textdomain');
+
 
 /**
  * bp_like_get_text()
@@ -38,11 +39,23 @@ if ( is_admin() ) {
 require_once( BPLIKE_PATH . 'includes/button-functions.php' );
 require_once( BPLIKE_PATH . 'includes/templates/activity-update.php' );
 require_once( BPLIKE_PATH . 'includes/templates/activity-comment.php' );
-require_once( BPLIKE_PATH . 'includes/templates/blog-post.php' );
-require_once( BPLIKE_PATH . 'includes/templates/blog-comment.php' );
 require_once( BPLIKE_PATH . 'includes/install-functions.php' );
 require_once( BPLIKE_PATH . 'includes/activity-functions.php' );
 require_once( BPLIKE_PATH . 'includes/ajax.php' );
 require_once( BPLIKE_PATH . 'includes/like-functions.php' );
 require_once( BPLIKE_PATH . 'includes/scripts.php' );
 require_once( BPLIKE_PATH . 'includes/settings.php' );
+require_once( BPLIKE_PATH . 'includes/class-bplike-likes.php' );
+require_once( BPLIKE_PATH . 'includes/screens.php' );
+require_once( BPLIKE_PATH . 'includes/template.php' );
+require_once( BPLIKE_PATH . 'includes/bplike-likes-functions.php' );
+
+
+if ( bp_like_get_settings( 'enable_blog_post_support' ) == 1 ) {
+  require_once( BPLIKE_PATH . 'includes/templates/blog-post.php' );
+  require_once( BPLIKE_PATH . 'includes/templates/blog-comment.php' );
+}
+
+if ( bp_is_active( 'notifications' ) && bp_like_get_settings( 'enable_notifications' ) == 1 ) {
+//  require_once( BPLIKE_PATH . 'includes/notifications.php' );
+}
